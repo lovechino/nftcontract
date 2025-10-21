@@ -1,9 +1,16 @@
 import { ethers } from "ethers";
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 import * as fs from "fs";
-import * as dotenv from "dotenv";
-dotenv.config();
+
+// === Cấu hình môi trường ===
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 // 📌 Cấu hình môi trường từ .env
+
 
 const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
 const wallet = new ethers.Wallet(process.env.SEPOLIA_PRIVATE_KEY!, provider);

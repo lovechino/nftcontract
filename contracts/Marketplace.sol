@@ -14,6 +14,7 @@ contract Marketplace is ReentrancyGuard {
         uint256 price;
     }
 
+    // NFT address => tokenId => Listing
     mapping(address => mapping(uint256 => Listing)) public listings;
 
     event NFTListed(address indexed nft, uint256 indexed tokenId, address seller, uint256 price);
@@ -50,5 +51,18 @@ contract Marketplace is ReentrancyGuard {
         require(item.seller == msg.sender, "Not seller");
         delete listings[nftAddress][tokenId];
         emit NFTUnlisted(nftAddress, tokenId);
+    }
+
+    /**
+     * @dev Trả về danh sách các NFT đang được list theo danh sách tokenId
+     */
+    function getAllListings(
+        address nftAddress,
+        uint256[] calldata tokenIds
+    ) external view returns (Listing[] memory activeListings) {
+        activeListings = new Listing[](tokenIds.length);
+        for (uint256 i = 0; i < tokenIds.length; i++) {
+            activeListings[i] = listings[nftAddress][tokenIds[i]];
+        }
     }
 }
